@@ -1,5 +1,5 @@
 /*
- * $Id: installproperty.js,v 0.4 2013/03/20 14:34:31 dankogai Exp dankogai $
+ * $Id: installproperty.js,v 0.5 2013/03/20 14:41:25 dankogai Exp dankogai $
  *
  *  (c) 2013 Dan Kogai
  *
@@ -47,13 +47,16 @@
         })(nameOfSafe);
         var prev;
         if (isArray(target)) { // array needs special andling :-(
-            // Number(unknown) === NaN when unknown cannot be converted
-            if (target.length <= Number(prop)) { 
-                // save original length
-                prev = getOwnPropertyDescriptor(target, 'length');
-                if (!safe['length']) safe['length'] = [];
-                safe['length'].push(prev);
-                target.length = prop;
+            // strictly check if prop is a stringified positive integer 
+            if (prop.match(/^[0-9]+$/)) {
+                // and length will be updated
+                if (target.length <= prop * 1) { 
+                    // then save original length
+                    prev = getOwnPropertyDescriptor(target, 'length');
+                    if (!safe['length']) safe['length'] = [];
+                    safe['length'].push(prev);
+                    target.length = prop;
+                }
             }
         }
         prev = getOwnPropertyDescriptor(target, prop);
