@@ -10,7 +10,7 @@ if (this['window'] !== this) {
 (function(root){
     'use strict';
     var o = Object.create(null),
-    prev, descs, prevs;
+    prev, descs, prevs, err;
     it ('Object.installProperty(o, "k", {value:1}); // works',
         eq(Object.installProperty(o, "k", {value:1}), true));
     // console.log(o);
@@ -42,5 +42,8 @@ if (this['window'] !== this) {
     it ('Object.restoreProperties(o); // cleans spotlessly',
         ok(o[0] === 0 && o[1] === 1 
            && Object.getOwnPropertyNames(o).length === 3) // 0,1,length
-       ); 
+       );
+    Object.restoreProperties(Object);
+    it ('Object.restoreProperties(Object); // harakiri!',
+        eq(''.hasOwnProperty.call(Object, 'restoreProperties'), false));
 })(this);

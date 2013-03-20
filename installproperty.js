@@ -97,12 +97,16 @@
         getOwnPropertyNames(target[nameOfSafe])
             .filter(function(k) {return k !== nameOfSafe})
             .forEach(function(name) {
-                var safe = target[nameOfSafe][name];
+                var safe = target[nameOfSafe][name],
+                desc;
                 if (safe && safe.length){
-                    defineProperty(target, name, safe[0]);
-                } else {
-                    delete target[name]
+                    desc = safe[0];
+                    if (desc) { 
+                        defineProperty(target, name, safe[0]);
+                        return;
+                    } 
                 }
+                delete target[name]
         });
         delete target[nameOfSafe];
     };
@@ -113,7 +117,7 @@
             writable: true
         };
     };
-    defineProperties(Object, {
+    installProperties(Object, {
         installProperty:   v2s(installProperty),
         revertProperty:    v2s(revertProperty),
         installProperties: v2s(installProperties),
