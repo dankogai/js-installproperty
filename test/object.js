@@ -10,7 +10,7 @@ if (this['window'] !== this) {
 (function(root){
     'use strict';
     var o = Object.create(null),
-    prev, descs;
+    prev, descs, prevs;
     it ('Object.installProperty(o, "k", {value:1}); // works',
         eq(Object.installProperty(o, "k", {value:1}), true));
     // console.log(o);
@@ -32,8 +32,9 @@ if (this['window'] !== this) {
     it ('Object.installProperties(o, descs) === o;',
         eq(Object.installProperties(o, descs), o));
     it ('o[0] === 1 && o[1] === 2', ok(o[0] === 1 && o[1] === 2));
-    it ('Object.revertProperties(o) === o;',
-        eq(Object.revertProperties(o), o));
+    it ('Object.revertProperties(o)',
+        ok(prevs = Object.revertProperties(o)));
+    console.log(prevs, Object.getOwnPropertyNames(prevs));
     it ('o[0] === 0 && o[1] === 1', ok(o[0] === 0 && o[1] === 1));
     Object.installProperties(o, descs);
     // console.log(Object.keys(o), Object.getOwnPropertyNames(o));

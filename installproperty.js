@@ -84,12 +84,14 @@
     };
     function revertProperties(target, descs) {
         descs = descs || target[nameOfSafe];
+        var prevs = create(null);
         getOwnPropertyNames(descs)
             .filter(function(k) {return k !== nameOfSafe})
             .forEach(function(name) {
-            revertProperty(target, name, descs[name]);
+                var prev = revertProperty(target, name, descs[name]);
+                if (prev) defineProperty(prevs, name, prev);
         });
-        return target;
+        return prevs;
     };
     function restoreProperties(target) {
         getOwnPropertyNames(target[nameOfSafe])
