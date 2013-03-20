@@ -47,30 +47,48 @@ property *unconditionally*.  Isn't it nice if you can undo the operation,
 especially when you are tweaking built-in objects?  This `installproperty.js`
 just does that!
 
-On load, `installproperty.js` *installProperties* following functions to `Object`.
+On load, `installproperty.js` *installProperties* following functions
+to `Object`.
 
 ### Object.installProperty( *obj* , *prop* , *desc* )
 
-Same as `Object.defineProperty` except the previous descriptor can be reverted.
+Same as `Object.defineProperty` except the previous descriptor can be
+reverted.
 
-+ If *prop* already exists but not `configurable:true` and `writable:true`, it gives up and returns `false`
-+ It forces *desc* to be `configurable:true` and `writable:true` so it can be reverted.
++ If *prop* already exists but not `configurable:true` and
+`writable:true`, it gives up and returns `false`
++ It forces *desc* to be `configurable:true` and `writable:true` so it
+can be reverted.
 
-Returns `true` on success, `false` otherwise.  And if it fails to create "revert buffer", throws exception.
+Returns `true` on success, `false` otherwise.  And if it fails to
+create "revert buffer", throws exception.
 
-### Object.installProperty( *obj* , *prop* )
+### Object.defaultProperty( *obj* , *prop* , *desc* )
 
-Reverts the *prop* in *obj*.  It returns the current descriptor or `undefined` if *prop* is not in *obj* or the revert buffer is empty.
+Does `Object.installProperty()` iff *prop* is not in *obj*.
+
+### Object.revertProperty( *obj* , *prop* )
+
+Reverts the *prop* in *obj*.  It returns the current descriptor or
+`undefined` if *prop* is not in *obj* or the revert buffer is empty.
 
 ### Object.installProperties( *obj* , *props* )
 
-Same as `Object.defineProperties` except the previous descriptors can be reverted.
+Same as `Object.defineProperties` except the previous descriptors can
+be reverted.
+
+### Object.defaultProperties( *obj* , *props* )
+
+Does `Object.installProperty()` only for each nonexistent properties.
 
 ### Object.revertProperties( *obj* *[, props ]* )
 
-Reverts properties at once.  *props* is an object that tells whose keys address what properties to revert.  If *prop* is ommitted, all properties in the "revert buffer" are reverted.
+Reverts properties at once.  *props* is an object that tells whose
+keys address what properties to revert.  If *prop* is ommitted, all
+properties in the "revert buffer" are reverted.
 
-Returns an object with pairs of reverted property names and the corresponding descriptors.  That way you can go like:
+Returns an object with pairs of reverted property names and the
+corresponding descriptors.  That way you can go like:
 
 ````javascript
 descs = Object.revertProperties(obj);
@@ -80,7 +98,8 @@ Object.installProperties(obj, descs); // redo!
 
 ### Object.restoreProperties( *obj* )
 
-Spotlessly restores *obj*.  All properties are restored back to its initial state (the state before the first invocation of Object.installPropert(y|ies) ) and its "revert buffer" is removed.
+Spotlessly restores *obj*.  All properties are restored back to its
+initial state (the state before the first invocation of
+Object.installPropert(y|ies) ) and its "revert buffer" is removed.
 
 Yes, you can restore `Object` itself via `Object.restoreProperties(Object)`!
-

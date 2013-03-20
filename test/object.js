@@ -37,12 +37,22 @@ if (this['window'] !== this) {
     // console.log(prevs, Object.getOwnPropertyNames(prevs));
     it ('o[0] === 0 && o[1] === 1', ok(o[0] === 0 && o[1] === 1));
     Object.installProperties(o, descs);
+    Object.defineProperties(descs, 2, {value:3});
     // console.log(Object.keys(o), Object.getOwnPropertyNames(o));
     Object.restoreProperties(o);
     it ('Object.restoreProperties(o); // cleans spotlessly',
         ok(o[0] === 0 && o[1] === 1 
            && Object.getOwnPropertyNames(o).length === 3) // 0,1,length
        );
+    o = [0,1];
+    descs = {0:{value:1},1:{value:2},2:{value:3}};
+    Object.defaultProperties(o, descs);
+    //console.log(o, o.__previousProperties__);
+    it ('Object.defaultProperties(o ...);',
+        ok(o[0] === 0 && o[1] === 1 && o[2] === 3));
+    Object.restoreProperties(o);
+    it ('Object.defaultProperties(); // can be restored',
+        eq_deeply(o, [0,1]));
     Object.restoreProperties(Object);
     it ('Object.restoreProperties(Object); // harakiri!',
         eq(''.hasOwnProperty.call(Object, 'restoreProperties'), false));

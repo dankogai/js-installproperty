@@ -21,7 +21,8 @@
     var defineProperty = Object.defineProperty,
     defineProperties = Object.defineProperties,
     getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor,
-    getOwnPropertyNames = Object.getOwnPropertyNames;
+    getOwnPropertyNames = Object.getOwnPropertyNames,
+    isArray = Array.isArray;
     var isPrimitive = function(o) {
         return Object(o) !== o;
     };
@@ -44,7 +45,17 @@
                     throw e;
             }
         })(nameOfSafe);
-        var prev = getOwnPropertyDescriptor(target, prop);
+        var prev;
+        if (isArray(target)) { // array needs special andling :-(
+            prop *= 1;
+            if (target.length <= prop) { // save original length
+                prev = getOwnPropertyDescriptor(target, 'length');
+                if (!safe['length']) safe['length'] = [];
+                safe['length'].push(prev);
+                target.length = prop;
+            }
+        }
+        prev = getOwnPropertyDescriptor(target, prop);
         if (prev) {
             if (!prev.configurable) return false;
             if (!prev.writable) return true;
@@ -55,6 +66,10 @@
         safe[prop].push(prev);
         defineProperty(target, prop, desc);
         return true;
+    };
+    function defaultProperty(target, prop, desc) {
+        return has(target, prop) 
+            ? false : installProperty(target, prop, desc);
     };
     function revertProperty(target, prop) {
         if (prop === nameOfSafe) return;
@@ -77,8 +92,16 @@
     function installProperties(target, descs) {
         getOwnPropertyNames(descs)
             .filter(function(k) {return k !== nameOfSafe})
-                    .forEach(function(name) {
-            installProperty(target, name, descs[name]);
+            .forEach(function(name) {
+                installProperty(target, name, descs[name]);
+        });
+        return target;
+    };
+    function defaultProperties(target, descs) {
+        getOwnPropertyNames(descs)
+            .filter(function(k) {return k !== nameOfSafe})
+            .forEach(function(name) {
+                defaultProperty(target, name, descs[name]);
         });
         return target;
     };
@@ -117,10 +140,12 @@
             writable: true
         };
     };
-    installProperties(Object, {
+    defaultProperties(Object, {
         installProperty:   v2s(installProperty),
+        defaultProperty:   v2s(defaultProperty),
         revertProperty:    v2s(revertProperty),
         installProperties: v2s(installProperties),
+        defaultProperties: v2s(defaultProperties),
         revertProperties:  v2s(revertProperties),
         restoreProperties: v2s(restoreProperties)
     });
