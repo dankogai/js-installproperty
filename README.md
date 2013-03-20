@@ -66,6 +66,7 @@ create "revert buffer", throws exception.
 ### Object.defaultProperty( *obj* , *prop* , *desc* )
 
 Does `Object.installProperty()` iff *prop* is not in *obj*.
+Otherwise it immediately returns `false`, leaving *obj* intact.
 
 ### Object.revertProperty( *obj* , *prop* )
 
@@ -80,6 +81,9 @@ be reverted.
 ### Object.defaultProperties( *obj* , *props* )
 
 Does `Object.installProperty()` only for each nonexistent properties.
+Very handly if you want to extend non-owner objects like built-ins.
+This is the function used by installproperty.js to install all these
+functions.
 
 ### Object.revertProperties( *obj* *[, props ]* )
 
