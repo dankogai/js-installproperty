@@ -1,6 +1,6 @@
 [![build status](https://secure.travis-ci.org/dankogai/js-installproperty.png)](http://travis-ci.org/dankogai/js-installproperty)
 
-js-installproperty
+installproperty.js
 ==================
 
 defineProperty, undoably.
@@ -33,3 +33,49 @@ console.log(o[0], o[1]);    // 1, 2
 Object.revertProperties(o, descs);
 console.log(o[0], o[1]);    // 0, 1
 ````
+
+If you don't like it, you can restore the original state spotlessly:
+````javascript
+Object.restoreProperties(o);
+````
+
+DESCRIPTION
+-----------
+
+`Object.defineProperty` is great except the fact it overwrites the previous 
+property *unconditionally*.  Isn't it nice if you can undo the operation,
+especially when you are tweaking built-in objects?  This installproperty.js
+just does that:
+
+### Object.installProperty( *obj* , *prop* , *desc* )
+
+Same as `Object.defineProperty` except the previous descriptor can be reverted.
+
++ If *prop* already exists but not `configurable:true` and `writable:true`, it gives up and returns `false`
++ It forces *desc* to be `configurable:true` and `writable:true` so it can be reverted.
+
+Returns `true` on success, `false` otherwise.  And if it fails to create "revert buffer", throws exception.
+
+### Object.installProperty( *obj* , *prop* )
+
+Reverts the *prop* in *obj*.  It returns the current descriptor or `undefined` if *prop* is not in *obj* or the revert buffer is empty.
+
+### Object.installProperties( *obj* , *props* )
+
+Same as `Object.defineProperties` except the previous descriptors can be reverted.
+
+### Object.revertProperties( *obj* *[, props ]* )
+
+Reverts properties at once.  *props* is an object that tells whose keys address what properties to revert.  If *prop* is ommitted, all properties in the "revert buffer" are reverted.
+
+Returns an object with pairs of reverted property names and the corresponding descriptors.  That way you can go like:
+
+````javascript
+descs = Object.revertProperties(obj);
+// ... later ...
+Object.installProperties(obj, descs); // redo!
+````
+
+### Object.restoreProperties( *obj* )
+
+Spotlessly restores *obj*.  All properties are restored back to its initial state (the state before the first invocation of Object.installPropert(y|ies) ) and its "revert buffer" is removed.
