@@ -1,3 +1,5 @@
+[![build status](https://secure.travis-ci.org/dankogai/js-installproperty.png)](http://travis-ci.org/dankogai/js-installproperty)
+
 js-installproperty
 ==================
 
@@ -11,8 +13,8 @@ One property by one…
 ````javascript
 var o = Object.create(null), prev, descs;
 Object.installProperty(o, "k", {value:1});      // true
-Object.defineProperty(o, 'ng', {value:'IGNOREME'});
-Object.installProperty(o, "ng", {value:1});     // false
+Object.defineProperty(o, "ng", {value:'IGNOREME'}); // define an immutable property
+Object.installProperty(o, "ng", {value:1});     // false because the target is immutable
 Object.installProperty(o, "k", {value:2});      // true
 console.log(o.k);                               // 2
 prev = Object.revertProperty(o, "k")
