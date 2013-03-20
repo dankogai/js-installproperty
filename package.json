@@ -1,0 +1,26 @@
+{
+  "name": "js-installproperty",
+  "version": "0.0.1",
+  "description": "defineProperty, undoably.",
+  "main": "installproperty.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies":{
+      "mocha" : "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dankogai/js-installproperty.git"
+  },
+  "keywords": [
+    "ES5"
+  ],
+  "author": "Dan Kogai",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "f3dd31b3d7be0f787b995ef571d5e9de23a473c3"
+}

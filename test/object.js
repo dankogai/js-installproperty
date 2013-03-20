@@ -34,7 +34,7 @@ if (this['window'] !== this) {
     it ('o[0] === 1 && o[1] === 2', ok(o[0] === 1 && o[1] === 2));
     it ('Object.revertProperties(o)',
         ok(prevs = Object.revertProperties(o)));
-    console.log(prevs, Object.getOwnPropertyNames(prevs));
+    // console.log(prevs, Object.getOwnPropertyNames(prevs));
     it ('o[0] === 0 && o[1] === 1', ok(o[0] === 0 && o[1] === 1));
     Object.installProperties(o, descs);
     // console.log(Object.keys(o), Object.getOwnPropertyNames(o));
