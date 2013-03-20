@@ -1,5 +1,5 @@
 /*
- * $Id: installproperty.js,v 0.3 2013/03/20 12:45:37 dankogai Exp dankogai $
+ * $Id: installproperty.js,v 0.4 2013/03/20 14:34:31 dankogai Exp dankogai $
  *
  *  (c) 2013 Dan Kogai
  *
@@ -47,8 +47,9 @@
         })(nameOfSafe);
         var prev;
         if (isArray(target)) { // array needs special andling :-(
-            prop *= 1;
-            if (target.length <= prop) { // save original length
+            // Number(unknown) === NaN when unknown cannot be converted
+            if (target.length <= Number(prop)) { 
+                // save original length
                 prev = getOwnPropertyDescriptor(target, 'length');
                 if (!safe['length']) safe['length'] = [];
                 safe['length'].push(prev);

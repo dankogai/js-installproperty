@@ -53,7 +53,9 @@ if (this['window'] !== this) {
     Object.restoreProperties(o);
     it ('Object.defaultProperties(); // can be restored',
         eq_deeply(o, [0,1]));
+    // console.log(Object.getOwnPropertyNames(Object));
     Object.restoreProperties(Object);
     it ('Object.restoreProperties(Object); // harakiri!',
         eq(''.hasOwnProperty.call(Object, 'restoreProperties'), false));
+    // console.log(Object.getOwnPropertyNames(Object));
 })(this);
