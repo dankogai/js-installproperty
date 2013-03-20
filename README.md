@@ -49,8 +49,6 @@ just does that!
 
 On load, `installproperty.js` *installProperties* following functions to `Object`.
 
-Yes, you can restore `Object` itself via `Object.restoreProperties(Object)`.
-
 ### Object.installProperty( *obj* , *prop* , *desc* )
 
 Same as `Object.defineProperty` except the previous descriptor can be reverted.
@@ -83,3 +81,6 @@ Object.installProperties(obj, descs); // redo!
 ### Object.restoreProperties( *obj* )
 
 Spotlessly restores *obj*.  All properties are restored back to its initial state (the state before the first invocation of Object.installPropert(y|ies) ) and its "revert buffer" is removed.
+
+Yes, you can restore `Object` itself via `Object.restoreProperties(Object)`!
+
