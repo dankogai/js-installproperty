@@ -35,4 +35,11 @@ if (this['window'] !== this) {
     it ('Object.revertProperties(o) === o;',
         eq(Object.revertProperties(o), o));
     it ('o[0] === 0 && o[1] === 1', ok(o[0] === 0 && o[1] === 1));
+    Object.installProperties(o, descs);
+    // console.log(Object.keys(o), Object.getOwnPropertyNames(o));
+    Object.restoreProperties(o);
+    it ('Object.restoreProperties(o); // cleans spotlessly',
+        ok(o[0] === 0 && o[1] === 1 
+           && Object.getOwnPropertyNames(o).length === 3) // 0,1,length
+       ); 
 })(this);
