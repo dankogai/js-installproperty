@@ -1,5 +1,5 @@
 /*
- * $Id: installproperty.js,v 0.5 2013/03/20 14:41:25 dankogai Exp dankogai $
+ * $Id: installproperty.js,v 0.6 2013/03/20 15:12:34 dankogai Exp dankogai $
  *
  *  (c) 2013 Dan Kogai
  *
