@@ -44,8 +44,12 @@ DESCRIPTION
 
 `Object.defineProperty` is great except the fact it overwrites the previous 
 property *unconditionally*.  Isn't it nice if you can undo the operation,
-especially when you are tweaking built-in objects?  This installproperty.js
-just does that:
+especially when you are tweaking built-in objects?  This `installproperty.js`
+just does that!
+
+On load, `installproperty.js` *installProperties* following functions to `Object`.
+
+Yes, you can restore `Object` itself via `Object.restoreProperties(Object)`.
 
 ### Object.installProperty( *obj* , *prop* , *desc* )
 
