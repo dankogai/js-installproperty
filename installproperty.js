@@ -128,10 +128,17 @@
                 desc;
                 if (safe && safe.length){
                     desc = safe[0];
-                    if (desc) { 
-                        defineProperty(target, name, safe[0]);
+                    if (desc) {
+                        // Firefox:
+                        // defining the length property on an array
+                        // is not currently supported
+                        if (isArray(target) && name === 'length') {
+                            target.length = safe[0].value;
+                        } else {
+                            defineProperty(target, name, safe[0]);
+                        }
                         return;
-                    } 
+                    }
                 }
                 delete target[name]
         });
