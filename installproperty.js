@@ -1,5 +1,5 @@
 /*
- * $Id: installproperty.js,v 0.7 2013/03/20 15:35:30 dankogai Exp dankogai $
+ * $Id: installproperty.js,v 0.8 2013/03/21 05:32:50 dankogai Exp dankogai $
  *
  *  (c) 2013 Dan Kogai
  *
@@ -61,7 +61,7 @@
         prev = getOwnPropertyDescriptor(target, prop);
         if (prev) {
             if (!prev.configurable) return false;
-            if (!prev.writable) return true;
+            if (!prev.writable)     return false;
         }
         desc.configurable = true;
         desc.writable = true;
